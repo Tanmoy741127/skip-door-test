@@ -187,14 +187,29 @@
             if (resFinal.success == true) {
               alert("Success! You will be redirected to the link");
               var playerId = resFinal.playerID;
-              window.location.href = "https://door.youtest.me/completed?id="+playerId;
-            }else{
-                alert("Error! Please try again");
+              window.location.href =
+                "https://door.youtest.me/completed?id=" + playerId;
+            } else {
+              alert("Error! Please try again");
             }
           });
 
         // Redirect to link
       }
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-1RF2MN72BH"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-1RF2MN72BH");
     </script>
   </body>
 </html>
