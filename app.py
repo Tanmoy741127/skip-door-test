@@ -41,7 +41,8 @@ def submitSkipRequest():
             playerID = res["playerID"]
             return json.dumps({
                 "success": True,
-                "playerID": playerID
+                "playerID": playerID,
+                "gameId": code
                 })
 
         raise Exception("Error while submitting request")

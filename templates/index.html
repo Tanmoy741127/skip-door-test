@@ -185,10 +185,18 @@
             document.getElementById("submitBtn").classList.remove("is-loading");
             if (resFinal == null) return;
             if (resFinal.success == true) {
-              alert("Success! You will be redirected to the link");
-              var playerId = resFinal.playerID;
-              window.location.href =
-                "https://door.youtest.me/completed?id=" + playerId;
+              if (
+                confirm("Success! You will be redirected to the scores page")
+              ) {
+                var gameId = resFinal.gameId;
+                window.location.href =
+                  "https://door.youtest.me/scores?id=" + gameId;
+              } else {
+                document.getElementById("link").value = "";
+                document.getElementById("playerName").value = "";
+                document.getElementById("playerGender").value = "";
+                document.getElementById("playerScore").value = "";
+              }
             } else {
               alert("Error! Please try again");
             }
