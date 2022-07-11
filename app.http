@@ -1,0 +1,9 @@
+POST http://127.0.0.1:5000/submit
+Content-Type:  application/json
+
+{
+    "link" : "https://door.youtest.me/gate?id=NxBx0r",
+    "name" : "Test user",
+    "gender" : "male",
+    "scores": 1
+}

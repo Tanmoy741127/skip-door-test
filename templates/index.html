@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bypass "Dare of Gates"</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      p,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      a,
+      button {
+        font-family: "Inter", sans-serif;
+      }
+      h2 {
+        font-size: 30px;
+        text-align: center;
+        margin-bottom: 50px;
+        margin-top: 25px;
+        font-weight: 500;
+      }
+      .outer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .container_n,
+      .button,
+      select {
+        width: 400px;
+      }
+      @media screen and (max-width: 700px) {
+        .container_n,
+        .button,
+        select {
+          width: 90vw;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <section class="section">
+      <div class="outer">
+        <div class="container_n">
+          <h2>Bypass "Dare of Gates 🪟"</h2>
+
+          <div class="field">
+            <label class="label">Enter Link</label>
+            <div class="control">
+              <input
+                class="input"
+                id="link"
+                type="text"
+                placeholder="Enter link"
+              />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Name</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                id="playerName"
+                placeholder="Enter your name"
+              />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Select Gender</label>
+            <div class="control">
+              <div class="select">
+                <select id="playerGender">
+                  <option selected disabled>Select Gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Score</label>
+            <div class="control">
+              <input
+                min="1"
+                class="input"
+                type="number"
+                id="playerScore"
+                placeholder="Enter what score you want"
+              />
+            </div>
+          </div>
+          <button
+            class="button is-link is-medium is-rounded mt-5"
+            id="submitBtn"
+            onclick="submitRequest()"
+          >
+            <b>Submit Request</b>
+          </button>
+        </div>
+      </div>
+    </section>
+    <script>
+      let doRequest = false;
+      function submitRequest() {
+        if (doRequest) return;
+        // Validate fields
+        let link = document.getElementById("link").value;
+        let name = document.getElementById("playerName").value;
+        let gender = document.getElementById("playerGender").value;
+        let scores = document.getElementById("playerScore").value;
+
+        if (
+          link == null ||
+          link == undefined ||
+          !link.toString().includes("door.youtest.me")
+        ) {
+          alert("Enter a valid link. Link must contain 'door.youtest.me'");
+          return;
+        }
+
+        if (name == null || name == undefined || name.toString().length < 3) {
+          alert("Enter a valid name. Name must be at least 3 characters long");
+          return;
+        }
+
+        if (
+          scores == null ||
+          scores == undefined ||
+          parseInt(scores) == undefined ||
+          parseInt(scores) <= 1
+        ) {
+          alert("Enter a valid score. Score must be at least 1");
+          return;
+        }
+
+        if (!(gender == "male" || gender == "female")) {
+          alert("Please select a gender and resubmit");
+          return;
+        }
+
+        // Make request btn loading state
+        document.getElementById("submitBtn").classList.add("is-loading");
+        doRequest = true;
+
+        let resFinal = null;
+
+        // Send request
+        fetch("/submit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            link: link,
+            name: name,
+            gender: gender,
+            scores: scores,
+          }),
+        })
+          .then((res) => {
+            return res.json();
+          })
+          .then((resJson) => {
+            resFinal = resJson;
+          })
+          .finally((_) => {
+            doRequest = false;
+            document.getElementById("submitBtn").classList.remove("is-loading");
+            if (resFinal == null) return;
+            if (resFinal.success == true) {
+              alert("Success! You will be redirected to the link");
+              var playerId = resFinal.playerID;
+              window.location.href = "https://door.youtest.me/completed?id="+playerId;
+            }else{
+                alert("Error! Please try again");
+            }
+          });
+
+        // Redirect to link
+      }
+    </script>
+  </body>
+</html>
